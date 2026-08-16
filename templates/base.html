@@ -1,0 +1,49 @@
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ title or "Subscription Manager" }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">M</div>
+      <div><strong>Maharani</strong><span>Subscription Manager</span></div>
+    </div>
+    <nav>
+      <a class="{{'active' if request.path=='/' else ''}}" href="/">Dashboard</a>
+      <a class="{{'active' if request.path.startswith('/subscriptions') else ''}}" href="/subscriptions">All Subscriptions</a>
+      <a class="{{'active' if request.path=='/due' else ''}}" href="/due">Due & Overdue</a>
+      <a class="{{'active' if request.path=='/calendar' else ''}}" href="/calendar">Calendar</a>
+      <a class="{{'active' if request.path=='/payments' else ''}}" href="/payments">Payment History</a>
+      <a class="{{'active' if request.path=='/notifications' else ''}}" href="/notifications">Notifications {% if unread_notifications %}<b class="count">{{ unread_notifications }}</b>{% endif %}</a>
+    </nav>
+    <div class="sidebar-footer">Maharani Wedding Collections<br><small>Social Media Department</small></div>
+  </aside>
+  <main>
+    <header>
+      <div><h1>{{ heading or "Social Media Subscription Manager" }}</h1><p>Maharani Wedding Collections</p></div>
+      <div class="header-actions">
+        <a class="bell" href="/notifications">🔔{% if unread_notifications %}<span>{{unread_notifications}}</span>{% endif %}</a>
+        <a class="btn primary" href="/subscription/add">+ Add Subscription</a>
+      </div>
+    </header>
+
+    {% with messages=get_flashed_messages(with_categories=true) %}
+      {% for category,message in messages %}
+        <div class="flash {{category}}">{{message}}</div>
+      {% endfor %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+</div>
+</body>
+</html>

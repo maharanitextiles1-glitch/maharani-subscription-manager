@@ -1,0 +1,12 @@
+
+{% extends "base.html" %}
+{% block content %}
+<div class="panel">
+  <div class="panel-title"><div><h2>Notifications</h2><p>Payment reminders and overdue alerts</p></div></div>
+  <div class="notification-list">
+  {% for n in notifications %}
+    <div class="notification"><div class="notif-icon">!</div><div><b>{{n.title}}</b><p>{{n.message}}</p><small>{{n.created_at}}</small></div></div>
+  {% else %}<p class="empty">No notifications.</p>{% endfor %}
+  </div>
+</div>
+{% endblock %}

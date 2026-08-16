@@ -1,0 +1,17 @@
+
+{% extends "base.html" %}
+{% block content %}
+<div class="panel">
+  <div class="panel-title"><div><h2>Due & Overdue</h2><p>Closest renewal dates first</p></div></div>
+  <div class="cards">
+  {% for s in subs %}
+    <div class="due-card">
+      <div><b>{{s.name}}</b><span class="badge {{s.calc_status|lower|replace(' ','-')}}">{{s.calc_status}}</span></div>
+      <strong>{{s.amount|money}}</strong>
+      <p>Due: {{s.renewal_date}} · {% if s.days < 0 %}{{-s.days}} days overdue{% else %}{{s.days}} days remaining{% endif %}</p>
+      <form method="post" action="/subscription/{{s.id}}/paid"><button class="btn primary">Mark as Paid</button></form>
+    </div>
+  {% else %}<p class="empty">Nothing due or overdue.</p>{% endfor %}
+  </div>
+</div>
+{% endblock %}

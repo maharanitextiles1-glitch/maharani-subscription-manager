@@ -1,0 +1,36 @@
+
+{% extends "base.html" %}
+{% block content %}
+<div class="stats">
+  <div class="stat"><span>Monthly</span><strong>{{ monthly|money }}</strong><small>Recurring monthly cost</small></div>
+  <div class="stat"><span>Yearly</span><strong>{{ yearly|money }}</strong><small>Recurring yearly cost</small></div>
+  <div class="stat"><span>Annual estimate</span><strong>{{ annual_est|money }}</strong><small>Monthly × 12 + yearly</small></div>
+  <div class="stat warning"><span>Due soon</span><strong>{{ due_soon }}</strong><small>Within 7 days</small></div>
+  <div class="stat danger"><span>Overdue</span><strong>{{ overdue }}</strong><small>{{ overdue_amount|money }} outstanding</small></div>
+</div>
+
+<div class="panel">
+  <div class="panel-title"><div><h2>All subscriptions</h2><p>{{subs|length}} subscriptions</p></div><a href="/subscriptions">View all →</a></div>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Service</th><th>Status</th><th>Renewal</th><th>Amount</th><th>Cycle</th><th>Payment</th><th></th></tr></thead>
+    <tbody>
+    {% for s in subs %}
+      <tr>
+        <td><b>{{s.name}}</b><small>{{s.category}}</small></td>
+        <td><span class="badge {{s.calc_status|lower|replace(' ','-')}}">{{s.calc_status}}</span></td>
+        <td>{{s.renewal_date}}</td>
+        <td><b>{{s.amount|money}}</b></td>
+        <td>{{s.billing_cycle}}</td>
+        <td>{{s.payment_status}}</td>
+        <td class="actions">
+          <a href="/subscription/{{s.id}}/edit">Edit</a>
+          {% if s.payment_status == 'Unpaid' %}<form method="post" action="/subscription/{{s.id}}/paid"><button>Mark Paid</button></form>{% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</div>
+{% endblock %}

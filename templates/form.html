@@ -1,0 +1,33 @@
+
+{% extends "base.html" %}
+{% block content %}
+<div class="panel form-panel">
+  <div class="panel-title"><div><h2>{{"Edit" if sub else "Add"}} Subscription</h2><p>All changes are saved to SQLite.</p></div></div>
+  <form method="post" class="form-grid">
+    <label>Subscription name<input required name="name" value="{{sub.name if sub else ''}}"></label>
+    <label>Category<select name="category">
+      {% for x in ['AI Tools','Social Media','Design','Video Editing','Marketing','Cloud Storage','Website','Advertising','Productivity','Communication','Other'] %}
+      <option {{'selected' if sub and sub.category==x else ''}}>{{x}}</option>{% endfor %}
+    </select></label>
+    <label>Amount (₹)<input required type="number" step="0.01" name="amount" value="{{sub.amount if sub else ''}}"></label>
+    <label>Billing cycle<select name="billing_cycle">
+      {% for x in ['Monthly','Quarterly','Half-yearly','Yearly','One-time','Custom'] %}<option {{'selected' if sub and sub.billing_cycle==x else ''}}>{{x}}</option>{% endfor %}
+    </select></label>
+    <label>Start date<input type="date" name="start_date" value="{{sub.start_date if sub else ''}}"></label>
+    <label>Next renewal date<input required type="date" name="renewal_date" value="{{sub.renewal_date if sub else ''}}"></label>
+    <label>Payment status<select name="payment_status">
+      {% for x in ['Paid','Unpaid'] %}<option {{'selected' if sub and sub.payment_status==x else ''}}>{{x}}</option>{% endfor %}
+    </select></label>
+    <label>Subscription status<select name="status">
+      {% for x in ['Active','Cancelled','Trial','Paused'] %}<option {{'selected' if sub and sub.status==x else ''}}>{{x}}</option>{% endfor %}
+    </select></label>
+    <label>Payment method<input name="payment_method" value="{{sub.payment_method if sub else ''}}" placeholder="Credit Card / UPI"></label>
+    <label>Reminder days before<input type="number" name="reminder_days" value="{{sub.reminder_days if sub else 7}}" min="0"></label>
+    <label>Website URL<input name="website_url" value="{{sub.website_url if sub else ''}}"></label>
+    <label>Account email<input type="email" name="account_email" value="{{sub.account_email if sub else ''}}"></label>
+    <label class="wide check"><input type="checkbox" name="auto_renew" {{'checked' if not sub or sub.auto_renew else ''}}> Auto renewal enabled</label>
+    <label class="wide">Notes<textarea name="notes" rows="4">{{sub.notes if sub else ''}}</textarea></label>
+    <div class="wide form-actions"><button class="btn primary" type="submit">Save Subscription</button><a class="btn" href="/subscriptions">Cancel</a></div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+
+{% extends "base.html" %}
+{% block content %}
+<div class="panel">
+  <div class="panel-title"><div><h2>Payment History</h2><p>Total recorded: {{total|money}}</p></div></div>
+  <div class="table-wrap"><table>
+  <thead><tr><th>Service</th><th>Amount</th><th>Paid date</th><th>Cycle</th><th>Method</th><th>Notes</th></tr></thead>
+  <tbody>{% for p in payments %}<tr><td><b>{{p.subscription_name}}</b></td><td>{{p.amount|money}}</td><td>{{p.payment_date}}</td><td>{{p.billing_period}}</td><td>{{p.payment_method}}</td><td>{{p.notes}}</td></tr>
+  {% else %}<tr><td colspan="6" class="empty">No payment history yet.</td></tr>{% endfor %}</tbody>
+  </table></div>
+</div>
+{% endblock %}
