@@ -187,9 +187,10 @@ def dashboard():
             overdue_amount += d["amount"]
     annual_est = monthly * 12 + yearly
     con.close()
+    overdue_items = [s for s in data if s["calc_status"] == "Overdue"]
     return render_template("dashboard.html", subs=data, monthly=monthly, yearly=yearly,
                            due_soon=due_soon, overdue=overdue, annual_est=annual_est,
-                           overdue_amount=overdue_amount)
+                           overdue_amount=overdue_amount, overdue_items=overdue_items)
 
 @app.route("/subscriptions")
 def subscriptions():
@@ -205,8 +206,10 @@ def subscriptions():
         if status and d["calc_status"] != status: continue
         if cycle and d["billing_cycle"] != cycle: continue
         data.append(d)
+    overdue_items = [s for s in data if s["calc_status"] == "Overdue"]
     con.close()
-    return render_template("subscriptions.html", subs=data, q=q, status=status, cycle=cycle)
+    return render_template("subscriptions.html", subs=data, q=q, status=status, cycle=cycle,
+                           overdue_items=overdue_items)
 
 @app.route("/subscription/add", methods=["GET","POST"])
 def add_subscription():

@@ -12,7 +12,7 @@
 </head>
 <body>
 <div class="layout">
-  <aside class="sidebar">
+  <aside class="sidebar desktop-only">
     <div class="brand">
       <div class="logo">M</div>
       <div><strong>Maharani</strong><span>Subscription Manager</span></div>
@@ -28,7 +28,16 @@
     <div class="sidebar-footer">Maharani Wedding Collections<br><small>Social Media Department</small></div>
   </aside>
   <main>
-    <header>
+
+    <div class="mobile-only mobile-topbar">
+      <div>
+        <strong>Maharani Wedding Collections</strong>
+        <span>All Subscriptions</span>
+      </div>
+      <a class="mobile-add-btn" href="/subscription/add">+</a>
+    </div>
+
+    <header class="desktop-only">
       <div><h1>{{ heading or "Social Media Subscription Manager" }}</h1><p>Maharani Wedding Collections</p></div>
       <div class="header-actions">
         <a class="bell" href="/notifications">🔔{% if unread_notifications %}<span>{{unread_notifications}}</span>{% endif %}</a>
@@ -45,5 +54,21 @@
     {% block content %}{% endblock %}
   </main>
 </div>
+
+<script>
+(function () {
+  const isMobile = window.matchMedia("(max-width: 800px)").matches;
+  const allowed = ["/subscriptions", "/subscription/add"];
+  const path = window.location.pathname;
+
+  // Allow edit forms too
+  const isEditPage = /^\/subscription\/\d+\/edit$/.test(path);
+
+  if (isMobile && !allowed.includes(path) && !isEditPage) {
+    window.location.replace("/subscriptions");
+  }
+})();
+</script>
+
 </body>
 </html>
