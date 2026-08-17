@@ -1,41 +1,48 @@
-
 {% extends "base.html" %}
 {% block content %}
-<div class="panel">
+<div class="panel desktop-subscriptions">
   <form class="filters" method="get">
     <input name="q" value="{{q}}" placeholder="Search subscriptions...">
-    <select name="status"><option value="">All statuses</option>
-      {% for x in ['Active','Due Soon','Overdue','Cancelled','Paused','Trial'] %}<option {{'selected' if status==x else ''}}>{{x}}</option>{% endfor %}
-    </select>
-    <select name="cycle"><option value="">All billing cycles</option>
-      {% for x in ['Monthly','Quarterly','Half-yearly','Yearly','One-time'] %}<option {{'selected' if cycle==x else ''}}>{{x}}</option>{% endfor %}
-    </select>
+    <select name="status"><option value="">All statuses</option>{% for x in ['Active','Due Soon','Overdue','Cancelled','Paused','Trial'] %}<option {{'selected' if status==x else ''}}>{{x}}</option>{% endfor %}</select>
+    <select name="cycle"><option value="">All billing cycles</option>{% for x in ['Monthly','Quarterly','Half-yearly','Yearly','One-time'] %}<option {{'selected' if cycle==x else ''}}>{{x}}</option>{% endfor %}</select>
     <button class="btn">Filter</button>
   </form>
-  <div class="table-wrap">
-  <table>
-    <thead><tr><th>Service</th><th>Status</th><th>Renewal</th><th>Amount</th><th class="mobile-hide-cycle">Cycle</th><th>Payment</th><th>Actions</th></tr></thead>
-    <tbody>
-      {% for s in subs %}
-      <tr>
-        <td><b>{{s.name}}</b><small>{{s.category}}</small></td>
-        <td><span class="badge {{s.calc_status|lower|replace(' ','-')}}">{{s.calc_status}}</span></td>
-        <td>{{s.renewal_date}}</td><td><b>{{s.amount|money}}</b></td><td class="mobile-hide-cycle">{{s.billing_cycle}}</td><td>{{s.payment_status}}</td>
-        <td class="actions">
-          <a href="/subscription/{{s.id}}/edit">Edit</a>
-          {% if s.payment_status == 'Unpaid' %}<form method="post" action="/subscription/{{s.id}}/paid"><button>Paid</button></form>
-          {% else %}<form method="post" action="/subscription/{{s.id}}/unpaid"><button>Unpaid</button></form>{% endif %}
-          {% if s.status == 'Cancelled' %}
-          <form method="post" action="/subscription/{{s.id}}/reactivate"><button>Reactivate</button></form>
-          {% else %}
-          <form method="post" action="/subscription/{{s.id}}/cancel"><button>Cancel</button></form>
-          {% endif %}
-          <form method="post" action="/subscription/{{s.id}}/delete" onsubmit="return confirm('Delete this subscription?')"><button class="danger-text">Delete</button></form>
-        </td>
-      </tr>
-      {% else %}<tr><td colspan="7" class="empty">No subscriptions found.</td></tr>{% endfor %}
-    </tbody>
-  </table>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Service</th><th>Status</th><th>Renewal</th><th>Amount</th><th>Cycle</th><th>Payment</th><th>Actions</th></tr></thead>
+    <tbody>{% for s in subs %}<tr>
+      <td><b>{{s.name}}</b><small>{{s.category}}</small></td><td><span class="badge {{s.calc_status|lower|replace(' ','-')}}">{{s.calc_status}}</span></td><td>{{s.renewal_date}}</td><td><b>{{s.amount|money}}</b></td><td>{{s.billing_cycle}}</td><td>{{s.payment_status}}</td>
+      <td class="actions"><a href="/subscription/{{s.id}}/edit">Edit</a>{% if s.payment_status == 'Unpaid' %}<form method="post" action="/subscription/{{s.id}}/paid"><button>Paid</button></form>{% else %}<form method="post" action="/subscription/{{s.id}}/unpaid"><button>Unpaid</button></form>{% endif %}{% if s.status == 'Cancelled' %}<form method="post" action="/subscription/{{s.id}}/reactivate"><button>Reactivate</button></form>{% else %}<form method="post" action="/subscription/{{s.id}}/cancel"><button>Cancel</button></form>{% endif %}<form method="post" action="/subscription/{{s.id}}/delete" onsubmit="return confirm('Delete this subscription?')"><button class="danger-text">Delete</button></form></td>
+    </tr>{% else %}<tr><td colspan="7" class="empty">No subscriptions found.</td></tr>{% endfor %}</tbody>
+  </table></div>
+</div>
+
+<div class="mobile-subscriptions">
+  <form class="mobile-filter-card" method="get">
+    <div class="mobile-search-wrap"><i class="fa-solid fa-magnifying-glass"></i><input name="q" value="{{q}}" placeholder="Search subscriptions"></div>
+    <div class="mobile-filter-row"><select name="status"><option value="">All statuses</option>{% for x in ['Active','Due Soon','Overdue','Cancelled','Paused','Trial'] %}<option {{'selected' if status==x else ''}}>{{x}}</option>{% endfor %}</select><button class="mobile-filter-btn" type="submit"><i class="fa-solid fa-filter"></i> Filter</button></div>
+  </form>
+  <div class="mobile-summary-line"><span><i class="fa-solid fa-layer-group"></i> {{subs|length}} subscriptions</span>{% if status or q %}<a href="/subscriptions">Clear filters</a>{% endif %}</div>
+  <div class="mobile-card-list">
+  {% for s in subs %}
+  <article class="subscription-mobile-card">
+    <div class="mobile-card-head">
+      <div class="service-icon">{% if s.category == 'AI Tools' %}<i class="fa-solid fa-wand-magic-sparkles"></i>{% elif s.category == 'Social Media' %}<i class="fa-solid fa-hashtag"></i>{% elif s.category == 'Design' %}<i class="fa-solid fa-pen-ruler"></i>{% elif s.category == 'Video Editing' %}<i class="fa-solid fa-film"></i>{% else %}<i class="fa-solid fa-cube"></i>{% endif %}</div>
+      <div class="service-title-wrap"><h3>{{s.name}}</h3><p>{{s.category}}</p></div>
+      <span class="badge mobile-status {{s.calc_status|lower|replace(' ','-')}}">{% if s.calc_status == 'Overdue' %}<i class="fa-solid fa-triangle-exclamation"></i>{% elif s.calc_status == 'Due Soon' %}<i class="fa-solid fa-clock"></i>{% elif s.calc_status == 'Cancelled' %}<i class="fa-solid fa-ban"></i>{% else %}<i class="fa-solid fa-circle-check"></i>{% endif %} {{s.calc_status}}</span>
+    </div>
+    <div class="mobile-price-row"><div><span class="mobile-label">Amount</span><strong class="mobile-amount">{{s.amount|money}}</strong></div><div class="mobile-payment-pill {{s.payment_status|lower}}">{% if s.payment_status == 'Paid' %}<i class="fa-solid fa-circle-check"></i>{% else %}<i class="fa-solid fa-circle-xmark"></i>{% endif %} {{s.payment_status}}</div></div>
+    <div class="mobile-info-grid">
+      <div class="mobile-info-item"><i class="fa-regular fa-calendar"></i><div><span>Renewal</span><b>{{s.renewal_date}}</b></div></div>
+      <div class="mobile-info-item"><i class="fa-solid fa-wallet"></i><div><span>Payment</span><b>{{s.payment_method or 'Not set'}}</b></div></div>
+    </div>
+    <div class="mobile-actions">
+      <a class="mobile-action-btn primary-action" href="/subscription/{{s.id}}/edit"><i class="fa-solid fa-pen"></i><span>Edit</span></a>
+      {% if s.payment_status == 'Unpaid' %}<form method="post" action="/subscription/{{s.id}}/paid"><button class="mobile-action-btn success-action" type="submit"><i class="fa-solid fa-check"></i><span>Mark Paid</span></button></form>{% else %}<form method="post" action="/subscription/{{s.id}}/unpaid"><button class="mobile-action-btn" type="submit"><i class="fa-solid fa-rotate-left"></i><span>Unpaid</span></button></form>{% endif %}
+      {% if s.status == 'Cancelled' %}<form method="post" action="/subscription/{{s.id}}/reactivate"><button class="mobile-action-btn" type="submit"><i class="fa-solid fa-play"></i><span>Reactivate</span></button></form>{% else %}<form method="post" action="/subscription/{{s.id}}/cancel"><button class="mobile-action-btn" type="submit"><i class="fa-solid fa-ban"></i><span>Cancel</span></button></form>{% endif %}
+      <form method="post" action="/subscription/{{s.id}}/delete" onsubmit="return confirm('Delete this subscription?')"><button class="mobile-action-btn danger-action" type="submit"><i class="fa-solid fa-trash"></i><span>Delete</span></button></form>
+    </div>
+  </article>
+  {% else %}<div class="mobile-empty"><i class="fa-regular fa-folder-open"></i><p>No subscriptions found.</p></div>{% endfor %}
   </div>
 </div>
 
@@ -43,7 +50,7 @@
 <div id="overdueModal" class="modal-backdrop">
   <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="overdueTitle">
     <button class="modal-close" type="button" onclick="closeOverdueModal()">×</button>
-    <div class="modal-icon">!</div>
+    <div class="modal-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
     <h2 id="overdueTitle">Payment Overdue</h2>
     <p class="modal-intro">
       You have {{ overdue_items|length }} overdue payment{{ '' if overdue_items|length == 1 else 's' }}.
@@ -64,12 +71,12 @@
     <div class="modal-actions">
       {% if overdue_items|length == 1 %}
       <form method="post" action="/subscription/{{ overdue_items[0].id }}/paid">
-        <button class="btn primary" type="submit">Mark as Paid</button>
+        <button class="btn primary" type="submit"><i class="fa-solid fa-check"></i> Mark as Paid</button>
       </form>
       {% else %}
       <a class="btn primary" href="/subscriptions?status=Overdue">View Overdue Payments</a>
       {% endif %}
-      <button class="btn" type="button" onclick="closeOverdueModal()">Close</button>
+      <button class="btn" type="button" onclick="closeOverdueModal()"><i class="fa-solid fa-xmark"></i> Close</button>
     </div>
   </div>
 </div>
@@ -81,5 +88,6 @@ function closeOverdueModal() {
 }
 </script>
 {% endif %}
+
 
 {% endblock %}

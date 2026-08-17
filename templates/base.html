@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -34,7 +35,7 @@
         <strong>Maharani Wedding Collections</strong>
         <span>All Subscriptions</span>
       </div>
-      <a class="mobile-add-btn" href="/subscription/add">+</a>
+      <a class="mobile-add-btn" href="/subscription/add" aria-label="Add subscription"><i class="fa-solid fa-plus"></i></a>
     </div>
 
     <header class="desktop-only">
