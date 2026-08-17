@@ -93,7 +93,7 @@ td{padding:13px 11px;border-bottom:1px solid #f1f5f9;font-size:13px;vertical-ali
   .desktop-only{display:none!important}
   .mobile-only{display:flex!important}
 
-  .layout{display:block;height:auto}
+  .layout{display:block;min-height:auto}
   main{padding:0 12px 18px}
 
   .mobile-topbar{
