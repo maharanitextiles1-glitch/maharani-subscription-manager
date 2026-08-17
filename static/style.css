@@ -525,3 +525,335 @@ td{padding:13px 11px;border-bottom:1px solid #f1f5f9;font-size:13px;vertical-ali
     grid-template-columns:repeat(2,1fr);
   }
 }
+
+
+/* Exact reference-style mobile All Subscriptions */
+.exact-mobile-subscriptions{display:none}
+
+@media(max-width:800px){
+  .desktop-subscriptions{display:none!important}
+  .minimal-mobile-subscriptions{display:none!important}
+  .mobile-subscriptions{display:none!important}
+  .exact-mobile-subscriptions{display:block!important}
+
+  body{
+    background:#fff;
+    color:#0b0c0f;
+  }
+
+  main{
+    padding:0 20px 18px;
+  }
+
+  .exact-mobile-topbar{
+    height:88px;
+    margin:0 -20px;
+    padding:0 26px;
+    display:flex!important;
+    align-items:center;
+    justify-content:space-between;
+    background:#fff;
+  }
+
+  .exact-menu-btn,
+  .exact-add-btn{
+    border:0;
+    background:transparent;
+    color:#0b0c0f;
+    width:36px;
+    height:36px;
+    padding:0;
+    display:grid;
+    place-items:center;
+    font-size:26px;
+    cursor:pointer;
+  }
+
+  .exact-mobile-title{
+    flex:1;
+    text-align:left;
+    margin-left:18px;
+    font-size:25px;
+    line-height:1;
+    font-weight:800;
+    letter-spacing:-.03em;
+  }
+
+  .exact-search-row{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 126px;
+    gap:14px;
+    align-items:center;
+    margin:2px 0 18px;
+  }
+
+  .exact-search{
+    position:relative;
+  }
+
+  .exact-search i{
+    position:absolute;
+    left:18px;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:17px;
+    color:#777b82;
+  }
+
+  .exact-search input,
+  .exact-filter{
+    width:100%;
+    height:58px;
+    border:1px solid #dddfe3;
+    border-radius:18px;
+    background:#fff;
+    font-size:17px;
+    color:#22252a;
+  }
+
+  .exact-search input{
+    padding:0 18px 0 50px;
+  }
+
+  .exact-search input::placeholder{
+    color:#93969c;
+  }
+
+  .exact-filter{
+    padding:0 16px;
+    font-weight:700;
+    appearance:auto;
+  }
+
+  .exact-list{
+    border-top:0;
+  }
+
+  .exact-sub-row{
+    display:grid;
+    grid-template-columns:72px minmax(0,1fr) 150px 106px;
+    column-gap:18px;
+    align-items:center;
+    min-height:132px;
+    padding:16px 0;
+    border-bottom:1px solid #ececef;
+  }
+
+  .exact-icon{
+    width:72px;
+    height:72px;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    color:#fff;
+    font-size:28px;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.15);
+  }
+
+  .exact-icon-0{background:linear-gradient(145deg,#ffb027,#ff2d55 52%,#7d2cff)}
+  .exact-icon-1{background:#e77752}
+  .exact-icon-2{background:#20b7ad}
+  .exact-icon-3{background:#16a985}
+  .exact-icon-4{background:#7c34f4}
+  .exact-icon-5{background:#ff1a0a}
+
+  .exact-main{
+    min-width:0;
+  }
+
+  .exact-main h3{
+    margin:0 0 7px;
+    font-size:22px;
+    line-height:1.12;
+    font-weight:800;
+    letter-spacing:-.025em;
+    color:#0b0c0f;
+    white-space:normal;
+    overflow-wrap:anywhere;
+  }
+
+  .exact-meta{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-size:17px;
+    line-height:1;
+  }
+
+  .exact-status{
+    font-weight:800;
+  }
+
+  .exact-status.active{color:#08a94f}
+  .exact-status.overdue{color:#f0464f}
+  .exact-status.due-soon{color:#d58a00}
+  .exact-status.cancelled,
+  .exact-status.paused{color:#7f838a}
+
+  .exact-dot,
+  .exact-date{
+    color:#a4a6ab;
+  }
+
+  .exact-price{
+    text-align:right;
+    align-self:center;
+  }
+
+  .exact-price strong{
+    display:block;
+    font-size:24px;
+    line-height:1;
+    font-weight:800;
+    letter-spacing:-.02em;
+    color:#0b0c0f;
+    white-space:nowrap;
+  }
+
+  .exact-price span{
+    display:block;
+    margin-top:7px;
+    color:#a4a6ab;
+    font-size:16px;
+    line-height:1;
+  }
+
+  .exact-paid-form{
+    margin:0;
+    justify-self:end;
+  }
+
+  .exact-paid-btn{
+    min-width:96px;
+    height:58px;
+    border:1px solid #d7d9dd;
+    border-radius:16px;
+    background:#fff;
+    color:#111317;
+    font-size:19px;
+    font-weight:800;
+    cursor:pointer;
+  }
+
+  .exact-paid-btn.overdue-btn{
+    background:#1197e8;
+    border-color:#1197e8;
+    color:#fff;
+  }
+
+  .exact-empty{
+    padding:40px 0;
+    text-align:center;
+    color:#969aa1;
+    font-size:15px;
+  }
+
+  /* Overdue modal stays above exact mobile layout */
+  .modal-backdrop{z-index:10000}
+}
+
+@media(max-width:620px){
+  main{padding:0 14px 16px}
+
+  .exact-mobile-topbar{
+    margin:0 -14px;
+    padding:0 18px;
+    height:74px;
+  }
+
+  .exact-mobile-title{
+    font-size:22px;
+    margin-left:12px;
+  }
+
+  .exact-search-row{
+    grid-template-columns:minmax(0,1fr) 96px;
+    gap:8px;
+    margin-bottom:10px;
+  }
+
+  .exact-search input,
+  .exact-filter{
+    height:48px;
+    border-radius:14px;
+    font-size:14px;
+  }
+
+  .exact-search i{
+    left:14px;
+    font-size:14px;
+  }
+
+  .exact-search input{
+    padding-left:40px;
+  }
+
+  .exact-sub-row{
+    grid-template-columns:52px minmax(0,1fr) 92px 68px;
+    column-gap:10px;
+    min-height:98px;
+    padding:12px 0;
+  }
+
+  .exact-icon{
+    width:52px;
+    height:52px;
+    font-size:20px;
+  }
+
+  .exact-main h3{
+    font-size:16px;
+    margin-bottom:6px;
+  }
+
+  .exact-meta{
+    gap:4px;
+    font-size:13px;
+  }
+
+  .exact-price strong{
+    font-size:17px;
+  }
+
+  .exact-price span{
+    font-size:12px;
+    margin-top:5px;
+  }
+
+  .exact-paid-btn{
+    min-width:66px;
+    height:46px;
+    border-radius:12px;
+    font-size:14px;
+  }
+}
+
+@media(max-width:390px){
+  .exact-sub-row{
+    grid-template-columns:48px minmax(0,1fr) 78px 58px;
+    column-gap:8px;
+  }
+
+  .exact-icon{
+    width:48px;
+    height:48px;
+  }
+
+  .exact-main h3{
+    font-size:15px;
+  }
+
+  .exact-meta{
+    font-size:12px;
+  }
+
+  .exact-price strong{
+    font-size:15px;
+  }
+
+  .exact-paid-btn{
+    min-width:58px;
+    height:42px;
+    font-size:13px;
+  }
+}

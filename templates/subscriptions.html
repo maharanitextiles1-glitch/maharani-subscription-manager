@@ -12,7 +12,6 @@
     </select>
     <button class="btn">Filter</button>
   </form>
-
   <div class="table-wrap">
     <table>
       <thead><tr><th>Service</th><th>Status</th><th>Renewal</th><th>Amount</th><th>Cycle</th><th>Payment</th><th>Actions</th></tr></thead>
@@ -32,128 +31,77 @@
             {% else %}
             <form method="post" action="/subscription/{{s.id}}/unpaid"><button>Unpaid</button></form>
             {% endif %}
-            {% if s.status == 'Cancelled' %}
-            <form method="post" action="/subscription/{{s.id}}/reactivate"><button>Reactivate</button></form>
-            {% else %}
-            <form method="post" action="/subscription/{{s.id}}/cancel"><button>Cancel</button></form>
-            {% endif %}
-            <form method="post" action="/subscription/{{s.id}}/delete" onsubmit="return confirm('Delete this subscription?')"><button class="danger-text">Delete</button></form>
           </td>
         </tr>
-      {% else %}
-        <tr><td colspan="7" class="empty">No subscriptions found.</td></tr>
       {% endfor %}
       </tbody>
     </table>
   </div>
 </div>
 
-<div class="minimal-mobile-subscriptions">
-  <form class="minimal-search" method="get">
-    <div class="minimal-search-input">
+<section class="exact-mobile-subscriptions">
+  <form class="exact-search-row" method="get">
+    <div class="exact-search">
       <i class="fa-solid fa-magnifying-glass"></i>
-      <input name="q" value="{{q}}" placeholder="Search">
+      <input name="q" value="{{q}}" placeholder="Search subscriptions...">
     </div>
-    <select name="status" onchange="this.form.submit()">
-      <option value="">All</option>
+    <select class="exact-filter" name="status" onchange="this.form.submit()">
+      <option value="">Filter</option>
       {% for x in ['Active','Due Soon','Overdue','Cancelled','Paused','Trial'] %}
       <option {{'selected' if status==x else ''}}>{{x}}</option>
       {% endfor %}
     </select>
   </form>
 
-  <div class="minimal-count">
-    <span>{{subs|length}} subscriptions</span>
-    {% if q or status %}<a href="/subscriptions">Clear</a>{% endif %}
-  </div>
-
-  <div class="minimal-list">
+  <div class="exact-list">
     {% for s in subs %}
-    <article class="minimal-sub-card">
-      <div class="minimal-card-top">
-        <div class="minimal-service-icon">
-          {% if s.category == 'AI Tools' %}
-          <i class="fa-solid fa-sparkles"></i>
-          {% elif s.category == 'Social Media' %}
-          <i class="fa-solid fa-hashtag"></i>
-          {% elif s.category == 'Design' %}
-          <i class="fa-solid fa-pen-ruler"></i>
-          {% elif s.category == 'Video Editing' %}
-          <i class="fa-solid fa-play"></i>
-          {% else %}
-          <i class="fa-solid fa-circle"></i>
-          {% endif %}
-        </div>
-
-        <div class="minimal-title">
-          <h3>{{s.name}}</h3>
-          <p>{{s.category}}</p>
-        </div>
-
-        <span class="minimal-status {{s.calc_status|lower|replace(' ','-')}}">
-          {% if s.calc_status == 'Overdue' %}
-          <i class="fa-solid fa-circle-exclamation"></i>
-          {% elif s.calc_status == 'Due Soon' %}
-          <i class="fa-regular fa-clock"></i>
-          {% elif s.calc_status == 'Cancelled' %}
-          <i class="fa-solid fa-circle-xmark"></i>
-          {% else %}
-          <i class="fa-solid fa-circle-check"></i>
-          {% endif %}
-          {{s.calc_status}}
-        </span>
-      </div>
-
-      <div class="minimal-main-row">
-        <div>
-          <strong>{{s.amount|money}}</strong>
-          <span>{{s.payment_status}}</span>
-        </div>
-        <div class="minimal-renewal">
-          <i class="fa-regular fa-calendar"></i>
-          <div>
-            <small>Renewal</small>
-            <b>{{s.renewal_date}}</b>
-          </div>
-        </div>
-      </div>
-
-      <div class="minimal-actions">
-        <a href="/subscription/{{s.id}}/edit" aria-label="Edit"><i class="fa-solid fa-pen"></i><span>Edit</span></a>
-
-        {% if s.payment_status == 'Unpaid' %}
-        <form method="post" action="/subscription/{{s.id}}/paid">
-          <button type="submit"><i class="fa-solid fa-check"></i><span>Paid</span></button>
-        </form>
+    <article class="exact-sub-row">
+      <div class="exact-icon exact-icon-{{ loop.index0 % 6 }}">
+        {% if 'Instagram' in s.name %}
+          <i class="fa-brands fa-instagram"></i>
+        {% elif 'Claude' in s.name %}
+          <i class="fa-regular fa-message"></i>
+        {% elif 'ChatGPT' in s.name %}
+          <i class="fa-regular fa-message"></i>
+        {% elif 'Adobe' in s.name or 'Canva' in s.name %}
+          <i class="fa-solid fa-pen"></i>
         {% else %}
-        <form method="post" action="/subscription/{{s.id}}/unpaid">
-          <button type="submit"><i class="fa-solid fa-rotate-left"></i><span>Unpaid</span></button>
-        </form>
+          <i class="fa-solid fa-star"></i>
         {% endif %}
-
-        {% if s.status == 'Cancelled' %}
-        <form method="post" action="/subscription/{{s.id}}/reactivate">
-          <button type="submit"><i class="fa-solid fa-play"></i><span>Activate</span></button>
-        </form>
-        {% else %}
-        <form method="post" action="/subscription/{{s.id}}/cancel">
-          <button type="submit"><i class="fa-solid fa-ban"></i><span>Cancel</span></button>
-        </form>
-        {% endif %}
-
-        <form method="post" action="/subscription/{{s.id}}/delete" onsubmit="return confirm('Delete this subscription?')">
-          <button class="minimal-delete" type="submit"><i class="fa-regular fa-trash-can"></i><span>Delete</span></button>
-        </form>
       </div>
+
+      <div class="exact-main">
+        <h3>{{ s.name }}</h3>
+        <div class="exact-meta">
+          <span class="exact-status {{ s.calc_status|lower|replace(' ','-') }}">{{ s.calc_status }}</span>
+          <span class="exact-dot">·</span>
+          <span class="exact-date">
+            {% set dt = s.renewal_date.split('-') %}
+            {{ s.renewal_date }}
+          </span>
+        </div>
+      </div>
+
+      <div class="exact-price">
+        <strong>{{ s.amount|money }}</strong>
+        <span>{{ s.billing_cycle }}</span>
+      </div>
+
+      {% if s.calc_status == 'Overdue' and s.payment_status == 'Unpaid' %}
+      <form class="exact-paid-form" method="post" action="/subscription/{{s.id}}/paid">
+        <button class="exact-paid-btn overdue-btn" type="submit">Paid</button>
+      </form>
+      {% else %}
+      <form class="exact-paid-form" method="post" action="/subscription/{{s.id}}/unpaid">
+        <button class="exact-paid-btn" type="submit">Paid</button>
+      </form>
+      {% endif %}
     </article>
     {% else %}
-    <div class="minimal-empty">
-      <i class="fa-regular fa-folder-open"></i>
-      <p>No subscriptions found</p>
-    </div>
+    <div class="exact-empty">No subscriptions found.</div>
     {% endfor %}
   </div>
-</div>
+</section>
 
 {% if overdue_items %}
 <div id="overdueModal" class="modal-backdrop">
