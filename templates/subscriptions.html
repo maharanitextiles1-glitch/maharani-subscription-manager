@@ -56,17 +56,27 @@
   <div class="exact-list">
     {% for s in subs %}
     <article class="exact-sub-row">
-      <div class="exact-icon exact-icon-{{ loop.index0 % 6 }}">
+      <div class="exact-icon exact-logo">
         {% if 'Instagram' in s.name %}
-          <i class="fa-brands fa-instagram"></i>
+          <img src="https://cdn.simpleicons.org/instagram/E4405F" alt="Instagram">
         {% elif 'Claude' in s.name %}
-          <i class="fa-regular fa-message"></i>
+          <img src="https://cdn.simpleicons.org/claude/D97757" alt="Claude">
+        {% elif 'Vmake' in s.name %}
+          <img src="https://www.google.com/s2/favicons?domain=vmake.ai&sz=128" alt="Vmake">
         {% elif 'ChatGPT' in s.name %}
-          <i class="fa-regular fa-message"></i>
-        {% elif 'Adobe' in s.name or 'Canva' in s.name %}
-          <i class="fa-solid fa-pen"></i>
+          <img src="https://cdn.simpleicons.org/openai/000000" alt="ChatGPT">
+        {% elif 'Higgsfield' in s.name %}
+          <img src="https://www.google.com/s2/favicons?domain=higgsfield.ai&sz=128" alt="Higgsfield AI">
+        {% elif 'Adobe' in s.name %}
+          <img src="https://cdn.simpleicons.org/adobe/FF0000" alt="Adobe">
+        {% elif 'Canva' in s.name %}
+          <img src="https://cdn.simpleicons.org/canva/00C4CC" alt="Canva">
+        {% elif 'Magnific' in s.name %}
+          <img src="https://www.google.com/s2/favicons?domain=magnific.ai&sz=128" alt="Magnific AI">
+        {% elif 'Google AI' in s.name or 'Google Flow' in s.name %}
+          <img src="https://cdn.simpleicons.org/google/4285F4" alt="Google AI">
         {% else %}
-          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-circle"></i>
         {% endif %}
       </div>
 
