@@ -94,7 +94,7 @@ td{padding:13px 11px;border-bottom:1px solid #f1f5f9;font-size:13px;vertical-ali
   .desktop-only{display:none!important}
   .mobile-only{display:flex!important}
 
-  .layout{display:block}
+  .layout{display:block;height:0}
   main{padding:0 12px 18px}
 
   .mobile-topbar{
